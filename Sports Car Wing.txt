@@ -1,0 +1,33 @@
+# Lines starting with a # character are comments to be ignored
+# You may have comment lines anywhere in the file\
+#
+# Other lines in the file are identified by specific KEYWORDS, followed by data
+# KEYWORDS may include Capital letters, but capitalization will be ignored
+# blank lines are also allowed and should be ignored
+
+# each line stands alone, and there is no required ORDER to the file
+
+title, Sports Car Wing Design
+distance_unit,  centimeters
+
+#                  a               b
+connections,(4,1), (4.3,1.7)
+
+#          name  rgb values   width     
+linestyle, red-thick,   (1,0,0),    3.0 
+linestyle, red-thin ,(1,0,0),    1.0 
+linestyle, green, (0,1,0),    3
+linestyle, dark-green, (0, 0.7, 0),   5
+linestyle, black, (0,0,0),  7
+
+payload, Wing, black,  3.1,1.72,2.74,1.95,2.06,1.88,.02,.76,2.77,1.54,3.1,1.72
+
+
+#            p0x   p0y    p1x   p1y  theta1   p2x   p26   theta2
+positions, (3.1,1.72), (3.1,2.24, -12), (2.96,2.81,-25)
+
+boundary, Car Frame, green, 4.61,2.58,3.33,2.14,3.12,1.56,0.03,0.59,0,0,2.69,0.1,4.08,0.87,4.61,2.58
+# drawing space    xmin  xmax  ymin  ymax
+window,             -2,    7,   -0.5,    4
+
+showlinks, True

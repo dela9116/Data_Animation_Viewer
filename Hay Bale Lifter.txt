@@ -1,0 +1,35 @@
+# Lines starting with a # character are comments to be ignored
+# You may have comment lines anywhere in the file\
+#
+# Other lines in the file are identified by specific KEYWORDS, followed by data
+# KEYWORDS may include Capital letters, but capitalization will be ignored
+# blank lines are also allowed and should be ignored
+
+# each line stands alone, and there is no required ORDER to the file
+
+title, Hay Bale Lifter
+distance_unit,  meters
+
+showlinks , True
+
+#                  a               b
+connections,(10,3), (8.7,5)
+
+#          name  rgb values   width     
+linestyle, red-thick,   (1,0,0),    3.0 
+linestyle, red-thin ,(1,0,0),    1.0 
+linestyle, green, (0,1,0),    3
+linestyle, dark-green, (0, 0.7, 0),   5
+linestyle, black, (0,0,0),  4
+
+payload, Bale, red-thick, 9, 2.25, 9, -1, 17, -1, 17, 5, 9, 5, 9, 2.25
+payload, spike, green,9, 2.25, 17, 2.25, 18, 2, 17, 1.75, 9, 1.75, 9, 2.25
+payload, Moving Joints, green, 8, 0, 8, 5, 9, 5, 10,2.25, 10,1.75, 9,0, 8, 0
+
+#            p0x   p0y    p1x   p1y  theta1   p2x   p26   theta2
+positions, (9, 2), (5, 6,   35), (0, 5,  0)
+
+boundary, Fixed Joints, black, 0, 0, 0, 2, 8, 2, 8, 0, 0, 0
+
+# drawing space    xmin  xmax  ymin  ymax
+window,             -1,    20,   -2,    14

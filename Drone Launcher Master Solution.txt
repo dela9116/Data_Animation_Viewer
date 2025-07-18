@@ -1,0 +1,37 @@
+# Lines starting with a # character are comments to be ignored
+# You may have comment lines anywhere in the file\
+#
+# Other lines in the file are identified by specific KEYWORDS, followed by data
+# KEYWORDS may include Capital letters, but capitalization will be ignored
+# blank lines are also allowed and should be ignored
+
+# each line stands alone, and there is no required ORDER to the file
+
+title, Keyboard Tray
+distance_unit,  meters
+showlinks   ,   true
+reversed   ,   false
+
+#                  a               b
+connections,(96.3, 11.3), (200,8)
+
+#          name  rgb values   width     
+linestyle, red-thick,   (1,0,0),    3.0 
+linestyle, red-thin ,(1,0,0),    1.0 
+linestyle, green, (0,1,0),    3
+linestyle, dark-green, (0, 0.7, 0),   5
+linestyle, black, (0,0,0),  4
+
+payload, Tray, red-thick, (201,0), (201,28), (14,28),(14,0) , (201,0)
+
+#            p0x   p0y    p1x   p1y  theta1   p2x   p26   theta2
+positions, (201,0), (180, 50,   -5), (10.214, 38.5 ,  30)
+
+boundary, Fixed Joints, black, (0,-54),( 0,28),(8,28 ),(8,0 ),(204,0 ),(204,45 ),(212,45 ),(212,-12 ),(150,-12 ),(150,-54 ),(54,-54 ),(54,-30 ),(7,-30 ),(7,-54 ),(0,-54 )
+
+#            Name   x-location   y-location
+tracepoint, Launcher CG,     60,        7
+
+
+# drawing space    xmin  xmax  ymin  ymax
+window,             -200,    225,   -60,    100
