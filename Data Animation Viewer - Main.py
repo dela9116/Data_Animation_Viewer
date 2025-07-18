@@ -1,8 +1,9 @@
 # standard PyQt5 imports
 import sys
+import numpy as np
+
 from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
-from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtGui import QCursor
 from PyQt5.QtCore import Qt, QEvent
 
@@ -19,7 +20,6 @@ from DataAnimation_ui import Ui_Dialog
 # import the Problem Specific class
 from DataProcessorClass_Complex import FourbarAnimator
 
-import numpy as np
 
 
 class main_window(QDialog):
@@ -30,10 +30,13 @@ class main_window(QDialog):
         self.ui.setupUi(self)
 
         # define any data (including object variables) your program might need
-        self.myAnimator1 = None
+        self.myAnimator = None
         self.defaultFilename = 'Landing Gear Design.txt'
 
         # create and setup the GL window object
+        self.glwindow1 = None
+        self.Reverse = True
+        self.Repeat = True
         self.setupGLWindows()
 
         # and define any Widget callbacks (buttons, etc) or other necessary setup
@@ -41,6 +44,22 @@ class main_window(QDialog):
 
         # show the GUI
         self.show()
+
+    def DrawingCallback(self):
+        # this is what actually draws the picture
+        if self.myAnimator is None: return
+        self.myAnimator.DrawPicture()  # drawing is done by the DroneCatcher object
+
+
+    def AnimationCallback(self, frame, nframes):
+        # calculations handled by DroneCapture class
+        self.myAnimator.ConfigureAnimationFrame(frame, nframes)
+        self.ui.horizontalSlider_frame.setValue(frame)
+        self.ui.Frame_Number.setText(str(frame))
+        # the next line is absolutely required for pause, resume, stop, etc !!!
+        app.processEvents()
+        pass
+
 
     def assign_widgets(self):  # callbacks for Widgets on your GUI
         self.ui.pushButton_Exit.clicked.connect(self.ExitApp)
@@ -50,6 +69,8 @@ class main_window(QDialog):
         self.ui.horizontalSlider_zoom.valueChanged.connect(self.glZoomSlider)
         self.ui.horizontalSlider_frame.valueChanged.connect(self.glFrameSlider)
         self.ui.pushButton_GetFile.clicked.connect(self.ReadFile)
+        self.ui.checkBox_Repeat.stateChanged.connect(self.CheckBoxRepeat)
+        self.ui.checkBox_Reverse.stateChanged.connect(self.CheckBoxReverse)
 
 
     def ReadFile(self, filename = False):
@@ -69,11 +90,11 @@ class main_window(QDialog):
         data = f1.readlines()  # read the entire file as a list of strings
         f1.close()  # close the file  ... very important
 
-        self.myAnimator1=FourbarAnimator()
+        self.myAnimator=FourbarAnimator()
 
         #try:
-        self.myAnimator1.processData(data)
-        am=self.myAnimator1
+        self.myAnimator.processData(data)
+        am=self.myAnimator
         self.glwindow1.setViewSize(am.xmin,am.xmax,am.ymin,am.ymax, allowDistortion=False)
 
         self.ui.Drawing_bounds.setText("X: " + str(am.xmin)+ ", "+ str(am.xmax)+ ",      Y: " + str(am.ymin)+ ", "+str(am.ymax))
@@ -95,7 +116,7 @@ class main_window(QDialog):
 
     def glFrameSlider(self):  # I used a slider to control manual animation
         frameval = int(self.ui.horizontalSlider_frame.value())
-        self.myAnimator1.ConfigureAnimationFrame(frameval, 120)
+        self.myAnimator.ConfigureAnimationFrame(frameval, 120)
         self.ui.Frame_Number.setText(str(frameval))
         self.glwindow1.glUpdate()  # update the GL image
         #self.setAngleSliderAndText()
@@ -103,7 +124,7 @@ class main_window(QDialog):
 
     def StartAnimation(self):  # a button to start GL Animation
         self.glwindow1.glStartAnimation(self.AnimationCallback, 120,
-                                    reverse=True, repeat=False, reset=True,
+                                    reverse=self.Reverse, repeat=self.Repeat, reset=False,
                                     reverseDelayTime=0.5)
 
     def StopAnimation(self):  # a button to Stop GL Animati0n
@@ -111,6 +132,22 @@ class main_window(QDialog):
 
     def PauseResumeAnimation(self):  # a button to Resume GL Animation
         self.glwindow1.glPauseResumeAnimation()
+
+    def CheckBoxRepeat(self):  # used a checkbox to Enable drawing of construction lines
+        if self.ui.checkBox_Repeat.isChecked():  # it is on
+            self.Repeat = True  # repeat when the end is reached?
+            # self.glAnimationReverse = False  # reverse when the end is reached?
+            # self.glAnimationReversed = False  # are we currently moving in reverse?
+        else:  # stop
+            self.Repeat = False
+        self.glwindow1.glUpdate()
+
+    def CheckBoxReverse(self):  # used a checkbox to Enable drawing of construction lines
+        if self.ui.checkBox_Reverse.isChecked():  # it is on
+            self.Reverse = True  # repeat when the end is reached?
+        else:  # stop
+            self.Reverse = False
+        self.glwindow1.glUpdate()
 
     def ExitApp(self):
         app.exit()
@@ -136,20 +173,6 @@ class main_window(QDialog):
         self.glwindow1.glMouseDisplayTextBox(self.ui.MouseLocation)
 
 
-    def DrawingCallback(self):
-        # this is what actually draws the picture
-        if self.myAnimator1 is None: return
-        self.myAnimator1.DrawPicture()  # drawing is done by the DroneCatcher object
-
-
-    def AnimationCallback(self, frame, nframes):
-        # calculations handled by DroneCapture class
-        self.myAnimator1.ConfigureAnimationFrame(frame, nframes)
-        self.ui.horizontalSlider_frame.setValue(frame)
-        self.ui.Frame_Number.setText(str(frame))
-        # the next line is absolutely required for pause, resume, stop, etc !!!
-        app.processEvents()
-        pass
 
 
 def no_file():
