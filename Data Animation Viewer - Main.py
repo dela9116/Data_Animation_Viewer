@@ -49,15 +49,8 @@ class main_window(QDialog):
         self.ui.pushButton_PauseResumeAnimation.clicked.connect(self.PauseResumeAnimation)
         self.ui.horizontalSlider_zoom.valueChanged.connect(self.glZoomSlider)
         self.ui.horizontalSlider_frame.valueChanged.connect(self.glFrameSlider)
-        self.ui.checkBox_Dragging.stateChanged.connect(self.DraggingOnOff)
-        self.ui.checkBox_Construction.stateChanged.connect(self.ConstructionOnOff)
-        self.ui.checkBox_ReverseInput.stateChanged.connect(self.ReverseInputAngle)
-        self.ui.checkBox_hideLinks.stateChanged.connect(self.HideLinks)
-        self.ui.checkBox_showTracepoints.stateChanged.connect(self.ShowTracepoints)
         self.ui.pushButton_GetFourbar.clicked.connect(self.GetFourbar)
-        self.ui.pushButton_SwapDrivenLink.clicked.connect(self.SwapLinks)
         #self.ui.pushButton_SaveTorqueFactorFile.clicked.connect(self.SaveTorqueFactorFile)
-        self.ui.pushButton_TracepointFile.clicked.connect(self.SaveTracepointFile)
 
     def GetFourbar(self,filename = False):
 
@@ -96,68 +89,13 @@ class main_window(QDialog):
 
         self.ui.horizontalSlider_frame.setValue(0)
         self.ui.horizontalSlider_zoom.setValue(100)
-        self.setAngleSliderAndText()
-        if self.myfourbar.showLinks == True:
-            self.ui.checkBox_hideLinks.setChecked(False)
-        else:
-            self.ui.checkBox_hideLinks.setChecked(True)
-
-        if self.myfourbar.reverseAngle == True:
-            self.ui.checkBox_ReverseInput.setChecked(True)
-        else:
-            self.ui.checkBox_ReverseInput.setChecked(False)
-
-        if self.myfourbar.showTracepoints == True:
-            self.ui.checkBox_showTracepoints.setChecked(True)
-        else:
-            self.ui.checkBox_showTracepoints.setChecked(False)
-        if self.myfourbar.showLinks:
-            self.StartStopDragging(True)
 
 
 # Widget callbacks start here
 
-    def SaveTorqueFactorFile(self):
-        self.ui.pushButton_SaveTorqueFactorFile.setEnabled(False)
-        filename = self.ui.textEdit_filename.toPlainText()
-        npoints = int(self.ui.N_precision.text())
-
-        self.myfourbar.WriteTorqueFactorFile(npoints, filename.replace(".txt"," -Torque Factors.txt"))
-
-        self.ui.pushButton_SaveTorqueFactorFile.setEnabled(True)
-
-
-
-    def SaveTracepointFile(self):
-        self.ui.pushButton_TracepointFile.setEnabled(False)
-        filename = self.ui.textEdit_filename.toPlainText()
-        npoints = 360
-
-        self.myfourbar.WriteTracepointsFile(filename.replace(".txt"," -Tracepoints.txt"))
-
-        self.ui.pushButton_TracepointFile.setEnabled(True)
-
-
-    def SwapLinks(self):
-        if self.myfourbar is None: return
-        self.myfourbar.ConfigureAnimationFrame(0, 120)
-        self.myfourbar.fourbar.SwapLinks()
-        self.myfourbar.DesignFourbar()
-        if self.myfourbar.showLinks:
-            self.StartStopDragging(True)
-        self.UpdateTextBoxes()
-        self.glwindow1.glUpdate()
-        self.ui.horizontalSlider_frame.setValue(0)
-        self.setAngleSliderAndText()
 
     def UpdateTextBoxes(self):
         fb=self.myfourbar.fourbar
-        self.ui.Position_A0.setText('{:.3f}, {:.3f}'.format(fb.a0x,fb.a0y) )
-        self.ui.Position_A.setText('{:.3f}, {:.3f}'.format(fb.ax,fb.ay) )
-        self.ui.Position_B0.setText('{:.3f}, {:.3f}'.format(fb.b0x,fb.b0y) )
-        self.ui.Position_B.setText('{:.3f}, {:.3f}'.format(fb.bx, fb.by))
-        self.ui.Starting_Angle.setText('{:.1f} deg.'.format(fb.theta2start*180/np.pi) )
-        self.ui.Ending_Angle.setText('{:.1f} deg.'.format(fb.theta2end*180/np.pi))
 
     def glZoomSlider(self):  # I used a slider to control GL zooming
         zoomval = float((self.ui.horizontalSlider_zoom.value()) / 200 + .5)
@@ -169,71 +107,12 @@ class main_window(QDialog):
         frameval = int(self.ui.horizontalSlider_frame.value())
         self.myfourbar.ConfigureAnimationFrame(frameval, 120)
         self.glwindow1.glUpdate()  # update the GL image
-        self.setAngleSliderAndText()
-        if frameval == 0:
-            if self.myfourbar.showLinks:
-                self.StartStopDragging(True)
-        else:
-            self.StartStopDragging(False)
+        #self.setAngleSliderAndText()
 
-
-    def setAngleSliderAndText(self):
-        self.ui.textbox_Input_angle.setText('{:.1f}'.format(self.myfourbar.fourbar.th2*180/np.pi))
-        th4val = 180 + self.myfourbar.fourbar.th4*180/np.pi
-        while th4val > 180:
-            th4val -= 360
-        while th4val < -180:
-            th4val += 360
-        self.ui.textbox_Follower_angle.setText('{:.1f}'.format(th4val))
-
-
-
-    def DraggingOnOff(self):  # used a checkbox to Enable GL Dragging
-        if self.ui.checkBox_Dragging.isChecked():  # start dragging
-            self.StartStopDragging(True)  # StartStopDragging is defined below
-        else:  # stop dragging
-            self.StartStopDragging(False)
-
-    def ConstructionOnOff(self):  # used a checkbox to Enable drawing of construction lines
-        if self.ui.checkBox_Construction.isChecked():  # it is on
-            self.myfourbar.constructionOn = True  #
-        else:  # stop
-            self.myfourbar.constructionOn = False  #
-        self.glwindow1.glUpdate()
-
-    def HideLinks(self):  # used a checkbox to Enable drawing of construction lines
-        if self.ui.checkBox_hideLinks.isChecked():  # it is on
-            self.myfourbar.showLinks = False  #
-            if self.myfourbar.showLinks == False:
-                self.StartStopDragging(False)
-        else:  # stop
-            self.myfourbar.showLinks = True #
-            if self.myfourbar.showLinks == True:
-                self.StartStopDragging(True)
-
-        self.glwindow1.glUpdate()
-
-
-    def ShowTracepoints(self):  # used a checkbox to Enable drawing of construction lines
-        if self.ui.checkBox_showTracepoints.isChecked():  # it is on
-            self.myfourbar.showTracepoints = True  #
-        else:  # stop
-            self.myfourbar.showTracepoints = False  #
-        self.glwindow1.glUpdate()
-
-
-    def ReverseInputAngle(self):  # used a checkbox to Enable drawing of construction lines
-        if self.ui.checkBox_ReverseInput.isChecked():  # it is on
-            self.myfourbar.reverseAngle = True  #
-        else:  # stop
-            self.myfourbar.reverseAngle = False  #
-        self.myfourbar.DesignFourbar()
-        self.glwindow1.glUpdate()
 
     def StartAnimation(self):  # a button to start GL Animation
         self.glwindow1.glStartAnimation(self.AnimationCallback, 120,
                                     reverse=True, repeat=False, reset=True,
-                                    RestartDraggingCallback=self.StartStopDragging,
                                     reverseDelayTime=0.5)
 
     def StopAnimation(self):  # a button to Stop GL Animati0n
@@ -282,26 +161,6 @@ class main_window(QDialog):
         # the next line is absolutely required for pause, resume, stop, etc !!!
         app.processEvents()
         pass
-
-    def draggingCallback(self, x, y, draglist, index):
-        # calculations handled by DroneCapture class
-        self.myfourbar.DraggingListItemChanged(x, y, draglist, index)
-        self.UpdateTextBoxes()
-
-    def StartStopDragging(self, start):  # needs problem specific customization!
-
-        if start is True:
-            draglist = self.myfourbar.CreateDraggingList()
-            near = 0.2  # define an acceptable mouse distance for dragging
-            handlesize = (self.myfourbar.xmax - self.myfourbar.xmin)/100
-            near = handlesize*handlesize
-            self.glwindow1.glStartDragging(self.draggingCallback, draglist, near,
-                                           handlesize=handlesize, handlewidth=1, handlecolor=[1, 0, 0])
-            self.ui.checkBox_Dragging.setChecked(True)
-        elif start is False:
-            self.glwindow1.glStopDragging()
-            self.ui.checkBox_Dragging.setChecked(False)
-
 
 
 def no_file():
