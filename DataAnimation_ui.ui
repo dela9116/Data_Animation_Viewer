@@ -177,7 +177,7 @@
     <widget class="QLabel" name="label_21">
      <property name="geometry">
       <rect>
-       <x>480</x>
+       <x>660</x>
        <y>80</y>
        <width>131</width>
        <height>20</height>
@@ -195,9 +195,9 @@
     <widget class="QLineEdit" name="Drawing_bounds">
      <property name="geometry">
       <rect>
-       <x>620</x>
+       <x>800</x>
        <y>80</y>
-       <width>461</width>
+       <width>281</width>
        <height>22</height>
       </rect>
      </property>
@@ -235,6 +235,43 @@
        <x>440</x>
        <y>40</y>
        <width>121</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_22">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>80</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Frame:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="Frame_Number">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>80</y>
+       <width>71</width>
        <height>22</height>
       </rect>
      </property>
@@ -259,7 +296,7 @@
    <property name="title">
     <string>Input</string>
    </property>
-   <widget class="QPushButton" name="pushButton_GetFourbar">
+   <widget class="QPushButton" name="pushButton_GetFile">
     <property name="geometry">
      <rect>
       <x>20</x>

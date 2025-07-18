@@ -17,7 +17,7 @@ from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
 from DataAnimation_ui import Ui_Dialog
 
 # import the Problem Specific class
-from DataProcessorClass_Complex import FourbarDesign
+from DataProcessorClass_Complex import FourbarAnimator
 
 import numpy as np
 
@@ -30,8 +30,8 @@ class main_window(QDialog):
         self.ui.setupUi(self)
 
         # define any data (including object variables) your program might need
-        self.myfourbar = None
-        self.filename = 'Landing Gear Design.txt'
+        self.myAnimator1 = None
+        self.defaultFilename = 'Landing Gear Design.txt'
 
         # create and setup the GL window object
         self.setupGLWindows()
@@ -49,10 +49,10 @@ class main_window(QDialog):
         self.ui.pushButton_PauseResumeAnimation.clicked.connect(self.PauseResumeAnimation)
         self.ui.horizontalSlider_zoom.valueChanged.connect(self.glZoomSlider)
         self.ui.horizontalSlider_frame.valueChanged.connect(self.glFrameSlider)
-        self.ui.pushButton_GetFourbar.clicked.connect(self.GetFourbar)
-        #self.ui.pushButton_SaveTorqueFactorFile.clicked.connect(self.SaveTorqueFactorFile)
+        self.ui.pushButton_GetFile.clicked.connect(self.ReadFile)
 
-    def GetFourbar(self,filename = False):
+
+    def ReadFile(self, filename = False):
 
         if filename is False:
         # get the filename using the OPEN dialog
@@ -69,33 +69,23 @@ class main_window(QDialog):
         data = f1.readlines()  # read the entire file as a list of strings
         f1.close()  # close the file  ... very important
 
-        self.myfourbar=FourbarDesign()
+        self.myAnimator1=FourbarAnimator()
 
         #try:
-        self.myfourbar.processFourbarData(data)
-        fb=self.myfourbar
-        self.glwindow1.setViewSize(fb.xmin,fb.xmax,fb.ymin,fb.ymax, allowDistortion=False)
+        self.myAnimator1.processData(data)
+        am=self.myAnimator1
+        self.glwindow1.setViewSize(am.xmin,am.xmax,am.ymin,am.ymax, allowDistortion=False)
+
+        self.ui.Drawing_bounds.setText("X: " + str(am.xmin)+ ", "+ str(am.xmax)+ ",      Y: " + str(am.ymin)+ ", "+str(am.ymax))
 
         QApplication.restoreOverrideCursor()
-        self.UpdateTextBoxes()
         self.glwindow1.glUpdate()
-        #except:
-            #QApplication.restoreOverrideCursor()
-            #bad_file()
-        # if len( fb.forcepoints ) == 0:
-        #     self.ui.groupBox_TorqueFactors.setEnabled(False)
-        # else:
-        #     self.ui.groupBox_TorqueFactors.setEnabled(True)
-
         self.ui.horizontalSlider_frame.setValue(0)
+        self.ui.Frame_Number.setText(str(0))
         self.ui.horizontalSlider_zoom.setValue(100)
 
 
 # Widget callbacks start here
-
-
-    def UpdateTextBoxes(self):
-        fb=self.myfourbar.fourbar
 
     def glZoomSlider(self):  # I used a slider to control GL zooming
         zoomval = float((self.ui.horizontalSlider_zoom.value()) / 200 + .5)
@@ -105,7 +95,8 @@ class main_window(QDialog):
 
     def glFrameSlider(self):  # I used a slider to control manual animation
         frameval = int(self.ui.horizontalSlider_frame.value())
-        self.myfourbar.ConfigureAnimationFrame(frameval, 120)
+        self.myAnimator1.ConfigureAnimationFrame(frameval, 120)
+        self.ui.Frame_Number.setText(str(frameval))
         self.glwindow1.glUpdate()  # update the GL image
         #self.setAngleSliderAndText()
 
@@ -124,7 +115,7 @@ class main_window(QDialog):
     def ExitApp(self):
         app.exit()
 
-    # Essential, but only if using mouse information with GL
+    # Essential if using mouse information with GL
     def eventFilter(self, source, event):  # allow GL to handle Mouse Events
         self.glwindow1.glHandleMouseEvents(event)  # let GL handle the event
         return super(QDialog, self).eventFilter(source, event)
@@ -147,17 +138,15 @@ class main_window(QDialog):
 
     def DrawingCallback(self):
         # this is what actually draws the picture
-        if self.myfourbar is None: return
-        self.myfourbar.DrawPicture()  # drawing is done by the DroneCatcher object
-
-        # if using dragging, let GL show dragging handles
-        self.glwindow1.glDraggingShowHandles()
+        if self.myAnimator1 is None: return
+        self.myAnimator1.DrawPicture()  # drawing is done by the DroneCatcher object
 
 
     def AnimationCallback(self, frame, nframes):
         # calculations handled by DroneCapture class
-        self.myfourbar.ConfigureAnimationFrame(frame, nframes)
+        self.myAnimator1.ConfigureAnimationFrame(frame, nframes)
         self.ui.horizontalSlider_frame.setValue(frame)
+        self.ui.Frame_Number.setText(str(frame))
         # the next line is absolutely required for pause, resume, stop, etc !!!
         app.processEvents()
         pass
@@ -184,6 +173,6 @@ if __name__ == "__main__":
         app = QApplication(sys.argv)
     app.aboutToQuit.connect(app.deleteLater)
     main_win = main_window()
-    if main_win.filename is  not  None:
-        main_win.GetFourbar(main_win.filename)
+    if main_win.defaultFilename is  not  None:  #read the default file
+        main_win.ReadFile(main_win.defaultFilename)
     sys.exit(app.exec_())

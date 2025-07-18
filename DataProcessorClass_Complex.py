@@ -103,7 +103,7 @@ class Construction():
         self.bfinal = 0
 
 
-class FourbarDesign():
+class FourbarAnimator():
     def __init__(self):
         self.title = None
         self.distance_unit = None
@@ -132,7 +132,7 @@ class FourbarDesign():
 
 
 
-    def processFourbarData(self, data):
+    def processData(self, data):
         # from the array of strings, fill the wing dictionary
         self.fourbar = Fourbar()
         fb = self.fourbar
