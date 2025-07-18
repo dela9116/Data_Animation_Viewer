@@ -17,7 +17,7 @@ from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
 from DataAnimation_ui import Ui_Dialog
 
 # import the Problem Specific class
-from DataProcessorClass_1 import FourbarDesign
+from DataProcessorClass_Complex import FourbarDesign
 
 import numpy as np
 
