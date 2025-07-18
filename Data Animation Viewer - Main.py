@@ -14,10 +14,10 @@ from OpenGL.GLUT import *
 from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
 
 # the ui created by Designer and pyuic
-from OpenGL_2D_ui import Ui_Dialog
+from DataAnimation_ui import Ui_Dialog
 
 # import the Problem Specific class
-from FourbarDesign import FourbarDesign
+from DataProcessorClass_1 import FourbarDesign
 
 import numpy as np
 
