@@ -112,6 +112,7 @@ class main_window(QDialog):
         QApplication.restoreOverrideCursor()
         self.glwindow1.glUpdate()
         self.ui.horizontalSlider_frame.setValue(0)
+        self.ui.horizontalSlider_frame.setMaximum(self.myAnimator.numberOfAnimationFrames)
         self.ui.Frame_Number.setText(str(0))
         self.ui.horizontalSlider_zoom.setValue(100)
 
@@ -183,6 +184,7 @@ class main_window(QDialog):
 
         # OPTIONAL: to display the mouse location  - the name of the TextBox
         self.glwindow1.glMouseDisplayTextBox(self.ui.MouseLocation)
+
 
 
 

@@ -401,6 +401,7 @@ class gl2D():
 #end of the GL2D class definition
 
 
+
 # a few useful drawing functions
 def gl2DText(text, x, y, font=GLUT_BITMAP_HELVETICA_18):
     glRasterPos2d(x, y)
@@ -412,12 +413,45 @@ def gl2DCircle(xcenter, ycenter, radius, fill=False, faces=24):
     theta = 0
 
     if fill:
-        glBegin(GL_POLYGON);
+        glBegin(GL_POLYGON)
     else:
-        glBegin(GL_LINE_STRIP);
+        glBegin(GL_LINE_STRIP)
 
-    glVertex2f(xcenter + np.cos(theta) * radius, ycenter + np.sin(theta) * radius);
+    glVertex2f(xcenter + np.cos(theta) * radius, ycenter + np.sin(theta) * radius)
     for i in range(1, faces + 1):
         theta = i / faces * 2 * np.pi
+        glVertex2f(xcenter + np.cos(theta) * radius, ycenter + np.sin(theta) * radius)
+    glEnd();
+
+def gl2DArc(xcenter, ycenter, radius, startDeg, stopDeg, faces=24):
+    start = startDeg * np.pi/180
+    delta = 1 / faces * (stopDeg - startDeg) * np.pi/180
+
+    theta = start
+    glBegin(GL_LINE_STRIP)
+    glVertex2f(xcenter + np.cos(theta) * radius, ycenter + np.sin(theta) * radius);
+    for i in range(1, faces + 1):
+        theta +=  delta
         glVertex2f(xcenter + np.cos(theta) * radius, ycenter + np.sin(theta) * radius);
     glEnd();
+
+def gl2DArrow(xtip, ytip, size, angleDeg = 0, widthDeg = 60, toCenter = False, fill=True):
+    theta = angleDeg * np.pi/180
+    delta = (180 - widthDeg) * np.pi/180
+    xcenter = xtip - size * np.cos(theta)
+    ycenter = ytip - size * np.sin(theta)
+
+    if fill:
+        glBegin(GL_POLYGON)
+    else:
+        glBegin(GL_LINE_STRIP)
+
+    glVertex2f(xcenter + np.cos(theta) * size, ycenter + np.sin(theta) * size)
+    glVertex2f(xcenter + np.cos(theta+delta) * size, ycenter + np.sin(theta+delta) * size)
+    if toCenter is True:
+        glVertex2f(xcenter, ycenter)
+    glVertex2f(xcenter + np.cos(theta-delta) * size, ycenter + np.sin(theta-delta) * size)
+    glVertex2f(xcenter + np.cos(theta) * size, ycenter + np.sin(theta) * size)
+
+    glEnd()
+

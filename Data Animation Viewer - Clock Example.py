@@ -13,7 +13,7 @@ from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
 from DataAnimation_ui import Ui_Dialog
 
 # import the Problem Specific class
-from AnimateFourbarClass import FourbarAnimator
+from AnimateClockClass import ClockAnimator
 
 
 class main_window(QDialog):
@@ -25,7 +25,7 @@ class main_window(QDialog):
 
         # Custom !!
         # Connect to your custom Animation-ready Class
-        self.myAnimatorClass = FourbarAnimator # No parentheses here, this is not an Instance of the class
+        self.myAnimatorClass = ClockAnimator # No parentheses here, this is not an Instance of the class
         self.myAnimator = None  # a new Animator instance will be created each time a file is read
         # The Animator class must have these three methods:
             # self.myAnimator.DrawPicture()
@@ -42,7 +42,7 @@ class main_window(QDialog):
 
         # Allow a file to be opened and displayed on program startup
         #self.defaultFilename = None
-        self.defaultFilename = 'Landing Gear Design.txt'
+        self.defaultFilename = 'Clock File 1.txt'
 
         # create and setup the GL window object
         self.glwindow1 = None
@@ -112,6 +112,7 @@ class main_window(QDialog):
         QApplication.restoreOverrideCursor()
         self.glwindow1.glUpdate()
         self.ui.horizontalSlider_frame.setValue(0)
+        self.ui.horizontalSlider_frame.setMaximum(self.myAnimator.numberOfAnimationFrames - 1)
         self.ui.Frame_Number.setText(str(0))
         self.ui.horizontalSlider_zoom.setValue(100)
 
@@ -126,7 +127,8 @@ class main_window(QDialog):
 
     def glFrameSlider(self):  # I used a slider to control manual animation
         frameval = int(self.ui.horizontalSlider_frame.value())
-        self.myAnimator.PrepareNextAnimationFrameData(frameval, 120)
+        max = self.ui.horizontalSlider_frame.maximum()
+        self.myAnimator.PrepareNextAnimationFrameData(frameval, self.myAnimator.numberOfAnimationFrames)
         self.ui.Frame_Number.setText(str(frameval))
         self.glwindow1.glUpdate()  # update the GL image
         #self.setAngleSliderAndText()
@@ -183,6 +185,7 @@ class main_window(QDialog):
 
         # OPTIONAL: to display the mouse location  - the name of the TextBox
         self.glwindow1.glMouseDisplayTextBox(self.ui.MouseLocation)
+
 
 
 
