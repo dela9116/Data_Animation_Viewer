@@ -31,4 +31,3 @@ boundary, left boundary, green, 0.168, 7.467, 1.232, 7.366, 4.803, 6.897, 1.232,
 # drawing space    xmin  xmax  ymin  ymax
 window,             -2,    7,   0,    10
 
-showlinks, false

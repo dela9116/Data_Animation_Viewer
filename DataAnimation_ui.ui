@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1136</width>
-    <height>1130</height>
+    <height>1206</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
      <x>10</x>
      <y>120</y>
      <width>1111</width>
-     <height>991</height>
+     <height>1031</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -73,7 +73,7 @@
       <x>10</x>
       <y>860</y>
       <width>1091</width>
-      <height>121</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="title">
@@ -121,7 +121,7 @@
     <widget class="QSlider" name="horizontalSlider_frame">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>90</x>
        <y>80</y>
        <width>401</width>
        <height>22</height>
@@ -167,7 +167,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="text">
@@ -177,15 +177,15 @@
     <widget class="QLabel" name="label_21">
      <property name="geometry">
       <rect>
-       <x>480</x>
-       <y>80</y>
+       <x>740</x>
+       <y>120</y>
        <width>131</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="text">
@@ -195,9 +195,9 @@
     <widget class="QLineEdit" name="Drawing_bounds">
      <property name="geometry">
       <rect>
-       <x>620</x>
-       <y>80</y>
-       <width>461</width>
+       <x>860</x>
+       <y>120</y>
+       <width>221</width>
        <height>22</height>
       </rect>
      </property>
@@ -232,9 +232,46 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>440</x>
-       <y>40</y>
-       <width>121</width>
+       <x>620</x>
+       <y>120</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_22">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Frame:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="Frame_Number">
+     <property name="geometry">
+      <rect>
+       <x>510</x>
+       <y>80</y>
+       <width>71</width>
        <height>22</height>
       </rect>
      </property>
@@ -243,6 +280,59 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_Repeat">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>120</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Repeat</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_Reverse">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>120</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Reverse</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_23">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>120</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Mouse Coords.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
@@ -259,7 +349,7 @@
    <property name="title">
     <string>Input</string>
    </property>
-   <widget class="QPushButton" name="pushButton_GetFourbar">
+   <widget class="QPushButton" name="pushButton_GetFile">
     <property name="geometry">
      <rect>
       <x>20</x>
