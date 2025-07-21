@@ -13,6 +13,7 @@ from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
 from DataAnimation_ui import Ui_Dialog
 
 # import the Problem Specific class
+# !!!!!!!!! this is the first of three custom lines in this file!!!!!!
 from AnimateClockClass import ClockAnimator
 
 
@@ -23,9 +24,15 @@ class main_window(QDialog):
         # setup the GUI
         self.ui.setupUi(self)
 
-        # Custom !!
+
+        #   !!!!!!!!! this is the second of three custom lines in this file!!!!!!
         # Connect to your custom Animation-ready Class
         self.myAnimatorClass = ClockAnimator # No parentheses here, this is not an Instance of the class
+
+        #   !!!!!!!!! this is the third of three custom lines in this file!!!!!!
+        # Allow a file to be opened and displayed on program startup
+        self.defaultFilename = 'Clock File 1.txt'   # could be None
+
         self.myAnimator = None  # a new Animator instance will be created each time a file is read
         # The Animator class must have these three methods:
             # self.myAnimator.DrawPicture()
@@ -40,9 +47,6 @@ class main_window(QDialog):
                 # self.AnimDelayTime  - delay time between frames
                 # self.AnimReverse, self.AnimRepeat, self.AnimReset
 
-        # Allow a file to be opened and displayed on program startup
-        #self.defaultFilename = None
-        self.defaultFilename = 'Clock File 1.txt'
 
         # create and setup the GL window object
         self.glwindow1 = None
