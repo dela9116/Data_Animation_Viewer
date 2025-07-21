@@ -27,10 +27,10 @@ class ClockAnimator():
         self.allowDistortion = False
 
         self.numberOfAnimationFrames  = None
-        self.AnimDelayTime = 0.1
+        self.AnimDelayTime = 0.02
         self.AnimReverse = False
         self.AnimRepeat = False
-        self.AnimReset = False
+        self.AnimReset = True
 
 
     def ProcessFileData(self, data):
@@ -98,5 +98,4 @@ class ClockAnimator():
     def PrepareNextAnimationFrameData(self, frame, nframes):
         self.handAngle = (90 - (self.angles[frame])) * np.pi / 180.0
 
-        pass
 
