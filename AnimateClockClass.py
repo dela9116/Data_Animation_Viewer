@@ -124,6 +124,15 @@ class FourbarAnimator():
         self.xmax = 0
         self.ymin = 0
         self.ymax = 0
+        self.allowDistortion = False
+
+
+        self.numberOfAnimationFrames  = 120
+        self.AnimDelayTime = 0.01
+        self.AnimReverse = True
+        self.AnimRepeat = False
+        self.AnimReset = False
+
         self.construction = None
         self.constructionOn=False
         self.reverseAngle = False
@@ -132,7 +141,7 @@ class FourbarAnimator():
 
 
 
-    def processData(self, data):
+    def ProcessFileData(self, data):
         # from the array of strings, fill the wing dictionary
         self.fourbar = Fourbar()
         fb = self.fourbar
@@ -399,7 +408,7 @@ class FourbarAnimator():
         return
 
 
-    def ConfigureAnimationFrame(self, frame, nframes):
+    def PrepareNextAnimationFrameData(self, frame, nframes):
         fb=self.fourbar
         self.framenum = frame
         if frame == 0: #use the original theta data

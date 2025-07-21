@@ -7,19 +7,13 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from PyQt5.QtGui import QCursor
 from PyQt5.QtCore import Qt, QEvent
 
-# standard OpenGL imports
-from OpenGL.GL import *
-from OpenGL.GLU import *
-from OpenGL.GLUT import *
-
 from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
 
 # the ui created by Designer and pyuic
 from DataAnimation_ui import Ui_Dialog
 
 # import the Problem Specific class
-from DataProcessorClass_Complex import FourbarAnimator
-
+from AnimateFourbarClass import FourbarAnimator
 
 
 class main_window(QDialog):
@@ -29,14 +23,30 @@ class main_window(QDialog):
         # setup the GUI
         self.ui.setupUi(self)
 
-        # define any data (including object variables) your program might need
-        self.myAnimator = None
+        # Custom !!
+        # Connect to your custom Animation-ready Class
+        self.myAnimatorClass = FourbarAnimator # No parentheses here, this is not an Instance of the class
+        self.myAnimator = None  # a new Animator instance will be created each time a file is read
+        # The Animator class must have these three methods:
+            # self.myAnimator.DrawPicture()
+            # self.myAnimator.PrepareNextAnimationFrameData(current frame,number of frames)
+            # self.myAnimator.ProcessFileData(data string) # interprets the data string read from the file
+        # After  ProcessFileData() is called, the self.Animator class must have meaningful values in
+            # the following drawing size class attributes (data items):
+                # self.xmin, self.xmax, self.ymin,self. ymax    - Used to set the window working space
+                # allowDistortion  - Will circles display as round or eliptical?
+            # And the following animation control class attributes:
+                # self.numberOfAnimationFrames   - total number of animation frames
+                # self.AnimDelayTime  - delay time between frames
+                # self.AnimReverse, self.AnimRepeat, self.AnimReset
+
+        # Allow a file to be opened and displayed on program startup
+        #self.defaultFilename = None
         self.defaultFilename = 'Landing Gear Design.txt'
 
         # create and setup the GL window object
         self.glwindow1 = None
-        self.Reverse = True
-        self.Repeat = True
+
         self.setupGLWindows()
 
         # and define any Widget callbacks (buttons, etc) or other necessary setup
@@ -53,7 +63,7 @@ class main_window(QDialog):
 
     def AnimationCallback(self, frame, nframes):
         # calculations handled by DroneCapture class
-        self.myAnimator.ConfigureAnimationFrame(frame, nframes)
+        self.myAnimator.PrepareNextAnimationFrameData(frame, nframes)
         self.ui.horizontalSlider_frame.setValue(frame)
         self.ui.Frame_Number.setText(str(frame))
         # the next line is absolutely required for pause, resume, stop, etc !!!
@@ -90,14 +100,14 @@ class main_window(QDialog):
         data = f1.readlines()  # read the entire file as a list of strings
         f1.close()  # close the file  ... very important
 
-        self.myAnimator=FourbarAnimator()
-
         #try:
-        self.myAnimator.processData(data)
-        am=self.myAnimator
-        self.glwindow1.setViewSize(am.xmin,am.xmax,am.ymin,am.ymax, allowDistortion=False)
+        self.myAnimator = self.myAnimatorClass()
+        anim = self.myAnimator
+        anim.ProcessFileData(data)
 
-        self.ui.Drawing_bounds.setText("X: " + str(am.xmin)+ ", "+ str(am.xmax)+ ",      Y: " + str(am.ymin)+ ", "+str(am.ymax))
+        self.glwindow1.setViewSize(anim.xmin,anim.xmax,anim.ymin,anim.ymax, anim.allowDistortion)
+
+        self.ui.Drawing_bounds.setText("X: " + str(anim.xmin)+ ", "+ str(anim.xmax)+ ",      Y: " + str(anim.ymin)+ ", "+str(anim.ymax))
 
         QApplication.restoreOverrideCursor()
         self.glwindow1.glUpdate()
@@ -116,16 +126,18 @@ class main_window(QDialog):
 
     def glFrameSlider(self):  # I used a slider to control manual animation
         frameval = int(self.ui.horizontalSlider_frame.value())
-        self.myAnimator.ConfigureAnimationFrame(frameval, 120)
+        self.myAnimator.PrepareNextAnimationFrameData(frameval, 120)
         self.ui.Frame_Number.setText(str(frameval))
         self.glwindow1.glUpdate()  # update the GL image
         #self.setAngleSliderAndText()
 
 
     def StartAnimation(self):  # a button to start GL Animation
-        self.glwindow1.glStartAnimation(self.AnimationCallback, 120,
-                                    reverse=self.Reverse, repeat=self.Repeat, reset=False,
-                                    reverseDelayTime=0.5)
+        anim = self.myAnimator
+        self.glwindow1.glStartAnimation(self.AnimationCallback, anim.numberOfAnimationFrames,
+                                        delaytime= anim.AnimDelayTime, reverseDelayTime = 0.5,
+                                        reverse=anim.AnimReverse, repeat=anim.AnimRepeat, reset = anim.AnimReset)
+
 
     def StopAnimation(self):  # a button to Stop GL Animati0n
         self.glwindow1.glStopAnimation()
