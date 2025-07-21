@@ -41,7 +41,7 @@ class main_window(QDialog):
         # After  ProcessFileData() is called, the self.Animator class must have meaningful values in
             # the following drawing size class attributes (data items):
                 # self.xmin, self.xmax, self.ymin,self. ymax    - Used to set the window working space
-                # allowDistortion  - Will circles display as round or eliptical?
+                # self.allowDistortion  - Will circles display as round or elliptical?
             # And the following animation control class attributes:
                 # self.numberOfAnimationFrames   - total number of animation frames
                 # self.AnimDelayTime  - delay time between frames
@@ -119,6 +119,8 @@ class main_window(QDialog):
         self.ui.horizontalSlider_frame.setMaximum(self.myAnimator.numberOfAnimationFrames)
         self.ui.Frame_Number.setText(str(0))
         self.ui.horizontalSlider_zoom.setValue(100)
+        self.ui.checkBox_Repeat.setChecked(anim.AnimRepeat)
+        self.ui.checkBox_Reverse.setChecked(anim.AnimReverse)
 
 
 # Widget callbacks start here
@@ -152,18 +154,17 @@ class main_window(QDialog):
 
     def CheckBoxRepeat(self):  # used a checkbox to Enable drawing of construction lines
         if self.ui.checkBox_Repeat.isChecked():  # it is on
-            self.Repeat = True  # repeat when the end is reached?
-            # self.glAnimationReverse = False  # reverse when the end is reached?
-            # self.glAnimationReversed = False  # are we currently moving in reverse?
+            self.myAnimator.AnimRepeat = True
         else:  # stop
-            self.Repeat = False
+            self.myAnimator.AnimRepeat = False
+
         self.glwindow1.glUpdate()
 
     def CheckBoxReverse(self):  # used a checkbox to Enable drawing of construction lines
         if self.ui.checkBox_Reverse.isChecked():  # it is on
-            self.Reverse = True  # repeat when the end is reached?
+            self.myAnimator.AnimReverse = True
         else:  # stop
-            self.Reverse = False
+            self.myAnimator.AnimReverse = False
         self.glwindow1.glUpdate()
 
     def ExitApp(self):

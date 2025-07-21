@@ -33,12 +33,10 @@ class ClockAnimator():
         self.AnimReset = False
 
 
-
     def ProcessFileData(self, data):
         # from the array of strings, fill the wing dictionary
 
         for line in data:  # loop over all the lines
-
             cells = line.strip().replace('(','').replace(')','').split(',')
             keyword = cells[0].strip().lower()
 
@@ -90,8 +88,9 @@ class ClockAnimator():
         glVertex2f(xval, yval)
         glEnd()
 
-
-        gl2DArrow(xval,yval,size,(self.handAngle * 180/np.pi), toCenter=True)
+        xval = (self.radius - 1.8*size) * np.cos(self.handAngle)
+        yval = (self.radius - 1.8*size) * np.sin(self.handAngle)
+        gl2DArrow(xval,yval,size,(self.handAngle * 180/np.pi), toCenter=True, widthDeg = 40)
 
 
 
