@@ -23,12 +23,13 @@ class TemperatureAnimator():
         self.spacing = 10
         self.tMin = None
         self.tMax= None
+
+        #required by the animator
         self.xmin = 0
         self.xmax = 0
         self.ymin = 0
         self.ymax = 0
         self.allowDistortion = False
-
         self.numberOfAnimationFrames  = None
         self.AnimDelayTime = 0.05
         self.AnimReverse = False
@@ -62,11 +63,9 @@ class TemperatureAnimator():
         self.rowSize = len(self.Temperatures[0])
         self.nRows = len(self.Temperatures)
         self.numberOfAnimationFrames = len(self.Temperatures) - 1
-        self.thisRow = 0
-        if self.tMin == None:
-            self.tMin = self.Temperatures[0][0]
-            self.tMax = self.Temperatures[0][self.rowSize - 1]
+        self.thisRow = 0 #for the animation frame on startup
 
+        #required for the animator
         self.xmin = -self.spacing * 2
         self.xmax = self.rowSize * self.spacing * 1.05
         self.ymin = -self.spacing
