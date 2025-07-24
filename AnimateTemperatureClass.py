@@ -83,12 +83,12 @@ class TemperatureAnimator():
         size = self.xmax / 8
         # draw the numbers
 
-        for i in range(self.rowSize):
+        for i in range(self.rowSize):  #draw my temperatere at nodes
             colors = temperature_to_rgb(temps[i],self.tMin,self.tMax)
             glColor3f(*colors)  #
             gl2DCircle(i*self.spacing, self.xmin, self.spacing/3,fill=True)
 
-        for i in range(self.rowSize):
+        for i in range(self.rowSize): #draw the temperature scale
             t = float(i) / self.rowSize * (self.tMax - self.tMin)    + self.tMin
             colors = temperature_to_rgb(t, self.tMin, self.tMax)
             glColor3f(*colors)  #
