@@ -88,8 +88,8 @@ class ClockAnimator():
         glVertex2f(xval, yval)
         glEnd()
 
-        xval = (self.radius - 1.8*size) * np.cos(self.handAngle)
-        yval = (self.radius - 1.8*size) * np.sin(self.handAngle)
+        xval = (self.radius - 1.7*size) * np.cos(self.handAngle)
+        yval = (self.radius - 1.7*size) * np.sin(self.handAngle)
         gl2DArrow(xval,yval,size,(self.handAngle * 180/np.pi), toCenter=True, widthDeg = 40)
 
 
