@@ -67,7 +67,7 @@ class TemperatureAnimator():
             self.tMin = self.Temperatures[0][0]
             self.tMax = self.Temperatures[0][self.rowSize - 1]
 
-        self.xmin = -self.spacing/2
+        self.xmin = -self.spacing * 2
         self.xmax = self.rowSize * self.spacing * 1.05
         self.ymin = -self.spacing
         self.ymax = self.spacing * 6
@@ -92,13 +92,14 @@ class TemperatureAnimator():
             t = float(i) / self.rowSize * (self.tMax - self.tMin)    + self.tMin
             colors = temperature_to_rgb(t, self.tMin, self.tMax)
             glColor3f(*colors)  #
-            gl2DCircle(i * self.spacing, self.ymax/2, self.spacing / 3, fill=True)
+            gl2DCircle(i * self.spacing, self.ymax/2, self.spacing / 1.0, fill=True)
 
             glColor3f(1,1,1)
 
             hf.drawText("Temperature Scale",(self.xmax + self.xmin)/2, self.ymax*0.9,
                         center = True, scale=self.spacing*1.5,weight=2)
-            hf.drawText(f"{self.tMin:.2f}", self.xmin, self.ymax * 0.7, center=False, scale=self.spacing ,weight=2)
+            hf.drawText(f"{self.tMin:.2f}", self.xmin + self.spacing*1, self.ymax * 0.7,
+                                center=False, scale=self.spacing ,weight=2)
             hf.drawText(f"{self.tMax:.2f}", self.xmax-self.spacing*3, self.ymax * 0.7, weight=2,
                                 center=False, scale=self.spacing, justify=1 )
 
