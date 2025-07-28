@@ -34,19 +34,19 @@ class main_window(QDialog):
         self.defaultFilename = 'Clock File 1.txt'   # could be None
 
         self.myAnimator = None  # a new Animator instance will be created each time a file is read
-        # The Animator class must have these three methods:
-            # self.myAnimator.DrawPicture()
-            # self.myAnimator.PrepareNextAnimationFrameData(current frame,number of frames)
-            # self.myAnimator.ProcessFileData(data string) # interprets the data string read from the file
-        # After  ProcessFileData() is called, the self.Animator class must have meaningful values in
-            # the following drawing size class attributes (data items):
-                # self.xmin, self.xmax, self.ymin,self.ymax    - Used to set the window working space
-                # self.allowDistortion  - Will circles display as round or elliptical?
-            # And the following animation control class attributes:
-                # self.numberOfAnimationFrames   - total number of animation frames
-                # self.AnimDelayTime  - delay time between frames
-                # self.AnimReverse, self.AnimRepeat, self.AnimReset
 
+        # The Animator class must have these three methods:
+            # self.myAnimator.DrawPicture() - a method capable of drawing the picture for the current frame
+            # self.myAnimator.PrepareNextAnimationFrameData(current frame,number of frames)
+            # self.myAnimator.ProcessFileData(filename) # name of the file to read
+        # After  ProcessFileData() is called, the self.Animator class must have meaningful values in
+        # the following drawing size class attributes (data items):
+            # self.xmin, self.xmax, self.ymin,self. ymax    - Used to set the window working space
+            # self.allowDistortion  - Will circles display as round or elliptical?
+        # And the following animation control class attributes:
+            # self.numberOfAnimationFrames   - total number of animation frames
+            # self.AnimDelayTime  - delay time between frames
+            # self.AnimReverse, self.AnimRepeat, self.AnimReset
 
         # create and setup the GL window object
         self.glwindow1 = None
@@ -99,15 +99,11 @@ class main_window(QDialog):
         app.processEvents()
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
 
-        # Read the file
-        f1 = open(filename, 'r')  # open the file for reading
-        data = f1.readlines()  # read the entire file as a list of strings
-        f1.close()  # close the file  ... very important
 
         #try:
         self.myAnimator = self.myAnimatorClass()
         anim = self.myAnimator
-        anim.ProcessFileData(data)
+        anim.ProcessFileData(filename)
 
         self.glwindow1.setViewSize(anim.xmin,anim.xmax,anim.ymin,anim.ymax, anim.allowDistortion)
 

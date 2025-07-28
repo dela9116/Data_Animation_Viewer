@@ -35,7 +35,7 @@ class main_window(QDialog):
 
         self.myAnimator = None  # a new Animator instance will be created each time a file is read
         # The Animator class must have these three methods:
-            # self.myAnimator.DrawPicture()
+            # self.myAnimator.DrawPicture() - a method capable of drawing the picture for the current frame
             # self.myAnimator.PrepareNextAnimationFrameData(current frame,number of frames)
             # self.myAnimator.ProcessFileData(data string) # interprets the data string read from the file
         # After  ProcessFileData() is called, the self.Animator class must have meaningful values in
@@ -107,7 +107,7 @@ class main_window(QDialog):
         #try:
         self.myAnimator = self.myAnimatorClass()
         anim = self.myAnimator
-        anim.ProcessFileData(data)
+        anim.ProcessFileData(filename)
 
         self.glwindow1.setViewSize(anim.xmin,anim.xmax,anim.ymin,anim.ymax, anim.allowDistortion)
 

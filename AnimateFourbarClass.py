@@ -141,8 +141,13 @@ class FourbarAnimator():
 
 
 
-    def ProcessFileData(self, data):
-        # from the array of strings, fill the wing dictionary
+    def ProcessFileData(self, filename):
+
+        # Read the file
+        f1 = open(filename, 'r')  # open the file for reading
+        data = f1.readlines()  # read the entire file as a list of strings
+        f1.close()  # close the file  ... very important
+
         self.fourbar = Fourbar()
         fb = self.fourbar
         self.construction = Construction()
