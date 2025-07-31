@@ -15,50 +15,53 @@ def draw_gradient_rectangle():
     gluOrtho2D(0, width, 0, height)
     glMatrixMode(GL_MODELVIEW)
 
-    glBegin(GL_QUADS)
-    # Define the gradient colors (left to right: blue to red)
-    glColor3f(0.0, 0.0, 1.0)   # Blue
-    glVertex2f(100, 80)        # Bottom-left
-    glVertex2f(100, 120)       # Top-left
-
-    glColor3f(0.0, 1.0, 1.0)   # Red
-    glVertex2f(300, 120)       # Top-right
-    glVertex2f(300, 80)        # Bottom-right
-    glEnd()
-
-    glBegin(GL_QUADS)
-    glColor3f(0.0, 1.0, 1.0)   # Blue
-    glVertex2f(300, 80)        # Bottom-left
-    glVertex2f(300, 120)       # Top-left
-
-    glColor3f(0.0, 1.0, 0.0)   # Red
-    glVertex2f(500, 120)       # Top-right
-    glVertex2f(500, 80)        # Bottom-right
-    glEnd()
-
-    glBegin(GL_QUADS)
-    glColor3f(0.0, 1.0, 0.0)   # Blue
-    glVertex2f(500, 80)        # Bottom-left
-    glVertex2f(500, 120)       # Top-left
-
-    glColor3f(1.0, 1.0, 0.0)   # Red
-    glVertex2f(700, 120)       # Top-right
-    glVertex2f(700, 80)        # Bottom-right
-    glEnd()
-
-    glBegin(GL_QUADS)
-    glColor3f(1.0, 1.0, 0.0)   # Blue
-    glVertex2f(700, 80)        # Bottom-left
-    glVertex2f(700, 120)       # Top-left
-
-
-    glColor3f(1.0, 0.0, 0.0)   # Red
-    glVertex2f(900, 120)       # Top-right
-    glVertex2f(900, 80)        # Bottom-right
-    glEnd()
-
+    drawTemperatureColorBar(100, 800, 80, 120)
 
     glutSwapBuffers()
+
+def drawTemperatureColorBar(xmin,xmax,ymin,ymax):
+
+    deltaX = (xmax-xmin)/4
+    glBegin(GL_QUADS)
+    # Define the gradient colors (left to right: blue to red)
+    glColor3f(0.0, 0.0, 1.0)  # Blue
+    glVertex2f(100, ymin)  # Bottom-left
+    glVertex2f(100, ymax)  # Top-left
+
+    glColor3f(0.0, 1.0, 1.0)  # Red
+    glVertex2f(xmin+deltaX, ymax)  # Top-right
+    glVertex2f(xmin+deltaX, ymin)  # Bottom-right
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(0.0, 1.0, 1.0)  # Blue
+    glVertex2f(xmin+deltaX, ymin)  # Bottom-left
+    glVertex2f(xmin+deltaX, ymax)  # Top-left
+
+    glColor3f(0.0, 1.0, 0.0)  # Red
+    glVertex2f(xmin+2*deltaX, ymax)  # Top-right
+    glVertex2f(xmin+2*deltaX, ymin)  # Bottom-right
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(0.0, 1.0, 0.0)  # Blue
+    glVertex2f(xmin+2*deltaX, ymin)  # Bottom-left
+    glVertex2f(xmin+2*deltaX, ymax)  # Top-left
+
+    glColor3f(1.0, 1.0, 0.0)  # Red
+    glVertex2f(xmin+3*deltaX, ymax)  # Top-right
+    glVertex2f(xmin+3*deltaX, ymin)  # Bottom-right
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 0.0)  # Blue
+    glVertex2f(xmin+3*deltaX, ymin)  # Bottom-left
+    glVertex2f(xmin+3*deltaX, ymax)  # Top-left
+
+    glColor3f(1.0, 0.0, 0.0)  # Red
+    glVertex2f(xmin+4*deltaX, ymax)  # Top-right
+    glVertex2f(xmin+4*deltaX, ymin)  # Bottom-right
+    glEnd()
 
 
 def temperature_to_rgb(temp, t_min, t_max):

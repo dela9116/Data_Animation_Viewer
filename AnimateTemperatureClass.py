@@ -79,7 +79,6 @@ class TemperatureAnimator():
 
         temps = self.Temperatures[self.thisRow]
 
-
         size = self.xmax / 8
         # draw the numbers
 
@@ -92,29 +91,27 @@ class TemperatureAnimator():
         hf.drawText("Temperature Values", (self.xmax + self.xmin) / 2, self.ymin + self.spacing *1.2,
                     center=True, scale=self.spacing * 1.5, weight=2)
 
-        # for i in range(self.rowSize * 3): # draw the temperature scale
-        #     t = float(i) / (self.rowSize*3) * (self.tMax - self.tMin)    + self.tMin
-        #     colors = temperature_to_rgb(t, self.tMin, self.tMax)
-        #     glColor3f(*colors)  #
-        #     gl2DCircle(i * self.spacing/3, self.ymax, self.spacing / 2.0, fill=True)
 
         # draw the temperature scale
         npoints  = 100
         spacing =0.9*(self.xmax - self.xmin) / npoints
-        for i in range(npoints):
-            t = float(i) / (npoints) * (self.tMax - self.tMin) + self.tMin
-            colors = temperature_to_rgb(t, self.tMin, self.tMax)
-            glColor3f(*colors)  #
-            gl2DCircle(i * spacing, self.ymax, self.spacing / 2.0, fill=True)
+        # for i in range(npoints):
+        #     t = float(i) / (npoints) * (self.tMax - self.tMin) + self.tMin
+        #     colors = temperature_to_rgb(t, self.tMin, self.tMax)
+        #     glColor3f(*colors)  #
+        #     gl2DCircle(i * spacing, self.ymax, self.spacing / 2.0, fill=True)
 
-            glColor3f(1,1,1)
+        drawTemperatureColorBarHorizontal(self.xmin+2*spacing, self.xmax-5*spacing, self.ymax - 15, self.ymax)
 
-            hf.drawText("Temperature Scale",(self.xmax + self.xmin)/2, self.ymax*1.3,
+        glColor3f(1,1,1)
+
+        hf.drawText("Temperature Scale",(self.xmax + self.xmin)/2, self.ymax*1.3,
                         center = True, scale=self.spacing*1.3,weight=2)
-            hf.drawText(f"{self.tMin:.2f}", self.xmin + self.spacing*1, self.ymax *1.2,
+        hf.drawText(f"{self.tMin:.2f}", self.xmin + self.spacing*1, self.ymax *1.2,
                                 center=False, scale=self.spacing ,weight=2)
-            hf.drawText(f"{self.tMax:.2f}", self.xmax-self.spacing*3, self.ymax * 1.2, weight=2,
+        hf.drawText(f"{self.tMax:.2f}", self.xmax-self.spacing*3, self.ymax * 1.2, weight=2,
                                 center=False, scale=self.spacing, justify=1 )
+
 
 
     def PrepareNextAnimationFrameData(self, frame, nframes):
@@ -161,5 +158,49 @@ def temperature_to_rgb(temp, t_min, t_max):
         b = 0.0
 
     return (r, g, b)
+
+
+def drawTemperatureColorBarHorizontal(xmin,xmax,ymin,ymax):
+    deltaX = (xmax-xmin)/4
+
+    glBegin(GL_QUADS)
+    glColor3f(0.0, 0.0, 1.0)  # Blue
+    glVertex2f(xmin, ymin)  # Bottom-left
+    glVertex2f(xmin, ymax)  # Top-left
+
+    glColor3f(0.0, 1.0, 1.0)  # Red
+    glVertex2f(xmin+deltaX, ymax)  # Top-right
+    glVertex2f(xmin+deltaX, ymin)  # Bottom-right
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(0.0, 1.0, 1.0)  # Blue
+    glVertex2f(xmin+deltaX, ymin)  # Bottom-left
+    glVertex2f(xmin+deltaX, ymax)  # Top-left
+
+    glColor3f(0.0, 1.0, 0.0)  # Red
+    glVertex2f(xmin+2*deltaX, ymax)  # Top-right
+    glVertex2f(xmin+2*deltaX, ymin)  # Bottom-right
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(0.0, 1.0, 0.0)  # Blue
+    glVertex2f(xmin+2*deltaX, ymin)  # Bottom-left
+    glVertex2f(xmin+2*deltaX, ymax)  # Top-left
+
+    glColor3f(1.0, 1.0, 0.0)  # Red
+    glVertex2f(xmin+3*deltaX, ymax)  # Top-right
+    glVertex2f(xmin+3*deltaX, ymin)  # Bottom-right
+    glEnd()
+
+    glBegin(GL_QUADS)
+    glColor3f(1.0, 1.0, 0.0)  # Blue
+    glVertex2f(xmin+3*deltaX, ymin)  # Bottom-left
+    glVertex2f(xmin+3*deltaX, ymax)  # Top-left
+
+    glColor3f(1.0, 0.0, 0.0)  # Red
+    glVertex2f(xmin+4*deltaX, ymax)  # Top-right
+    glVertex2f(xmin+4*deltaX, ymin)  # Bottom-right
+    glEnd()
 
 
