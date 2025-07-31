@@ -33,8 +33,12 @@ class ClockAnimator():
         self.AnimReset = True
 
 
-    def ProcessFileData(self, data):
-        # from the array of strings, fill the wing dictionary
+    def ProcessFileData(self, filename):
+
+        # Read the file
+        f1 = open(filename, 'r')  # open the file for reading
+        data = f1.readlines()  # read the entire file as a list of strings
+        f1.close()  # close the file  ... very important
 
         for line in data:  # loop over all the lines
             cells = line.strip().replace('(','').replace(')','').split(',')
