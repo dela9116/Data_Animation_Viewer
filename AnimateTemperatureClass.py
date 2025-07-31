@@ -83,24 +83,28 @@ class TemperatureAnimator():
         size = self.xmax / 8
         # draw the numbers
 
-        for i in range(self.rowSize):
+        for i in range(self.rowSize): #draw the actual temperatures
             colors = temperature_to_rgb(temps[i],self.tMin,self.tMax)
             glColor3f(*colors)  #
-            gl2DCircle(i*self.spacing, self.xmin, self.spacing/3,fill=True)
+            gl2DCircle(i*self.spacing, self.ymin, self.spacing/3,fill=True)
 
-        for i in range(self.rowSize):
-            t = float(i) / self.rowSize * (self.tMax - self.tMin)    + self.tMin
+        glColor3f(1, 1, 1)
+        hf.drawText("Temperature Values", (self.xmax + self.xmin) / 2, self.ymin + self.spacing *1.2,
+                    center=True, scale=self.spacing * 1.5, weight=2)
+
+        for i in range(self.rowSize * 3): # draw the temperature scale
+            t = float(i) / (self.rowSize*3) * (self.tMax - self.tMin)    + self.tMin
             colors = temperature_to_rgb(t, self.tMin, self.tMax)
             glColor3f(*colors)  #
-            gl2DCircle(i * self.spacing, self.ymax/2, self.spacing / 1.0, fill=True)
+            gl2DCircle(i * self.spacing/3, self.ymax, self.spacing / 2.0, fill=True)
 
             glColor3f(1,1,1)
 
-            hf.drawText("Temperature Scale",(self.xmax + self.xmin)/2, self.ymax*0.9,
-                        center = True, scale=self.spacing*1.5,weight=2)
-            hf.drawText(f"{self.tMin:.2f}", self.xmin + self.spacing*1, self.ymax * 0.7,
+            hf.drawText("Temperature Scale",(self.xmax + self.xmin)/2, self.ymax*1.3,
+                        center = True, scale=self.spacing*1.3,weight=2)
+            hf.drawText(f"{self.tMin:.2f}", self.xmin + self.spacing*1, self.ymax *1.2,
                                 center=False, scale=self.spacing ,weight=2)
-            hf.drawText(f"{self.tMax:.2f}", self.xmax-self.spacing*3, self.ymax * 0.7, weight=2,
+            hf.drawText(f"{self.tMax:.2f}", self.xmax-self.spacing*3, self.ymax * 1.2, weight=2,
                                 center=False, scale=self.spacing, justify=1 )
 
 
