@@ -60,6 +60,17 @@ class main_window(QDialog):
         # show the GUI
         self.show()
 
+    def resizeEvent(self, event):
+        width = self.width()
+        height = self.height()
+
+        # Divide window into three vertical panels (equal width)
+
+
+        print(f"Main window size: {width}x{height}")
+        super().resizeEvent(event)
+
+
     # ----------------- There should be no need to touch anything below this line  ---------------------
 
     def DrawingCallback(self):
@@ -102,15 +113,11 @@ class main_window(QDialog):
         app.processEvents()
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
 
-        # Read the file
-        f1 = open(filename, 'r')  # open the file for reading
-        data = f1.readlines()  # read the entire file as a list of strings
-        f1.close()  # close the file  ... very important
 
         #try:
         self.myAnimator = self.myAnimatorClass()
         anim = self.myAnimator
-        anim.ProcessFileData(data)
+        anim.ProcessFileData(filename)
 
         self.glwindow1.setViewSize(anim.xmin,anim.xmax,anim.ymin,anim.ymax, anim.allowDistortion)
 

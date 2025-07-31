@@ -92,11 +92,20 @@ class TemperatureAnimator():
         hf.drawText("Temperature Values", (self.xmax + self.xmin) / 2, self.ymin + self.spacing *1.2,
                     center=True, scale=self.spacing * 1.5, weight=2)
 
-        for i in range(self.rowSize * 3): # draw the temperature scale
-            t = float(i) / (self.rowSize*3) * (self.tMax - self.tMin)    + self.tMin
+        # for i in range(self.rowSize * 3): # draw the temperature scale
+        #     t = float(i) / (self.rowSize*3) * (self.tMax - self.tMin)    + self.tMin
+        #     colors = temperature_to_rgb(t, self.tMin, self.tMax)
+        #     glColor3f(*colors)  #
+        #     gl2DCircle(i * self.spacing/3, self.ymax, self.spacing / 2.0, fill=True)
+
+        # draw the temperature scale
+        npoints  = 100
+        spacing =0.9*(self.xmax - self.xmin) / npoints
+        for i in range(npoints):
+            t = float(i) / (npoints) * (self.tMax - self.tMin) + self.tMin
             colors = temperature_to_rgb(t, self.tMin, self.tMax)
             glColor3f(*colors)  #
-            gl2DCircle(i * self.spacing/3, self.ymax, self.spacing / 2.0, fill=True)
+            gl2DCircle(i * spacing, self.ymax, self.spacing / 2.0, fill=True)
 
             glColor3f(1,1,1)
 
