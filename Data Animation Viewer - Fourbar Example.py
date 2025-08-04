@@ -101,15 +101,10 @@ class main_window(QDialog):
         app.processEvents()
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
 
-        # Read the file
-        f1 = open(filename, 'r')  # open the file for reading
-        data = f1.readlines()  # read the entire file as a list of strings
-        f1.close()  # close the file  ... very important
-
         #try:
         self.myAnimator = self.myAnimatorClass()
         anim = self.myAnimator
-        anim.ProcessFileData(data)
+        anim.ProcessFileData(filename)
 
         self.glwindow1.setViewSize(anim.xmin,anim.xmax,anim.ymin,anim.ymax, anim.allowDistortion)
 

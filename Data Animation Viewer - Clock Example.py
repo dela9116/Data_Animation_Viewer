@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from PyQt5.QtGui import QCursor
 from PyQt5.QtCore import Qt, QEvent
 
-from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
+from OpenGL_2D_class_GLFW import gl2D, gl2DText, gl2DCircle
 
 # the ui created by Designer and pyuic
 from DataAnimation_ui import Ui_Dialog
@@ -155,7 +155,7 @@ class main_window(QDialog):
         self.glwindow1.glStartAnimation(self.AnimationCallback, anim.numberOfAnimationFrames,
                                         delaytime= anim.AnimDelayTime, reverseDelayTime = 0.5,
                                         reverse=anim.AnimReverse, repeat=anim.AnimRepeat, reset = anim.AnimReset)
-
+        pass
 
     def StopAnimation(self):  # a button to Stop GL Animati0n
         self.glwindow1.glStopAnimation()

@@ -6,7 +6,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
-from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
+from OpenGL_2D_class_GLFW import gl2D, gl2DText, gl2DCircle
 
 
 class Fourbar():
