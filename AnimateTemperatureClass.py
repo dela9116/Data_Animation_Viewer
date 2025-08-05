@@ -6,7 +6,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
-from OpenGL_2D_class import gl2D, gl2DArrow, gl2DCircle
+from OpenGL_2D_class_GLFW import gl2D, gl2DArrow, gl2DCircle
 
 from HersheyFont import HersheyFont
 hf = HersheyFont()
@@ -204,3 +204,24 @@ def drawTemperatureColorBarHorizontal(xmin,xmax,ymin,ymax):
     glEnd()
 
 
+def main():
+    ta=TemperatureAnimator()
+
+    f1 = open("Temperatures.csv", 'r')  # open the file for reading
+    data = f1.readlines()  # read the entire file as a list of strings
+    f1.close()  # close the file  ... very important
+
+    ta.ProcessFileData(data)
+
+    gl2d = gl2D(None,ta.DrawPicture)
+    gl2d.setViewSize(ta.xmin, ta.xmax, ta.ymin , ta.ymax,False)
+
+    nframes = ta.numberOfAnimationFrames
+    gl2d.glStartAnimation(ta.PrepareNextAnimationFrameData, nframes,delaytime=0.1,
+                                       reverse=True, repeat=False, reset=True)
+    gl2d.glWait()
+    print("hello")
+
+
+if __name__ == "__main__":
+    main()
