@@ -81,9 +81,9 @@ def main():
     # Rectangle vertices: x, y, normalized x (0 to 1)
     vertices = np.array([
         -0.9, -0.9, 0.0,
-        -0.9,  0.9, 0.3,
+        -0.9,  0.9, 0.25,
          0.9,  0.9, 1.0,
-         0.9, -0.9, 0.7
+         0.9, -0.9, 0.75
     ], dtype=np.float32)
 
     indices = np.array([0, 1, 2, 0, 2, 3], dtype=np.uint32)
