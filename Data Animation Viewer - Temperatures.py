@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from PyQt5.QtGui import QCursor
 from PyQt5.QtCore import Qt, QEvent
 
-from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
+from OpenGL_2D_class_GLFW import gl2D, gl2DText, gl2DCircle
 
 # the ui created by Designer and pyuic
 from DataAnimation_ui import Ui_Dialog
