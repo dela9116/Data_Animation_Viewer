@@ -32,7 +32,6 @@ class main_window(QDialog):
         # Allow a file to be opened and displayed on program startup
         self.defaultFilename = 'Temperatures2.csv'  # Could be None
 
-
         self.myAnimator = None  # a new Animator instance will be created each time a file is read
         # The Animator class must have these three methods:
             # self.myAnimator.ProcessFileData(data string) # interprets the data string read from the file
@@ -102,15 +101,10 @@ class main_window(QDialog):
         app.processEvents()
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
 
-        # Read the file
-        f1 = open(filename, 'r')  # open the file for reading
-        data = f1.readlines()  # read the entire file as a list of strings
-        f1.close()  # close the file  ... very important
-
         #try:
         self.myAnimator = self.myAnimatorClass()
         anim = self.myAnimator
-        anim.ProcessFileData(data)
+        anim.ProcessFileData(filename)
 
         self.glwindow1.setViewSize(anim.xmin,anim.xmax,anim.ymin,anim.ymax, anim.allowDistortion)
 

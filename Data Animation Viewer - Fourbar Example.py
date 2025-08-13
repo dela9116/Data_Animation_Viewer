@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from PyQt5.QtGui import QCursor
 from PyQt5.QtCore import Qt, QEvent
 
-from OpenGL_2D_class import gl2D, gl2DText, gl2DCircle
+from OpenGL_2D_class_GLFW import gl2D, gl2DText, gl2DCircle
 
 # the ui created by Designer and pyuic
 from DataAnimation_ui import Ui_Dialog
@@ -38,15 +38,15 @@ class main_window(QDialog):
         # self.myAnimator.DrawPicture()
         # self.myAnimator.PrepareNextAnimationFrameData(current frame,number of frames)
         # After  ProcessFileData() is called, the self.Animator class must have meaningful values in
-        # the following drawing size class attributes (data items):
-        # self.xmin, self.xmax, self.ymin,self. ymax    - Used to set the drawing window working space
-        # self.allowDistortion  - Will circles display as round or elliptical?
-        # And the following animation control class attributes:
-        # self.numberOfAnimationFrames   - total number of animation frames
-        # self.AnimDelayTime  - delay time between frames
-        # self.AnimReverse
-        # self.AnimRepeat
-        # self.AnimReset
+            # the following drawing size class attributes (data items):
+                # self.xmin, self.xmax, self.ymin,self. ymax    - Used to set the drawing window working space
+                # self.allowDistortion  - Will circles display as round or elliptical?
+            # And the following animation control class attributes:
+                # self.numberOfAnimationFrames   - total number of animation frames
+                # self.AnimDelayTime  - delay time between frames
+                # self.AnimReverse
+                # self.AnimRepeat
+                # self.AnimReset
 
         # create and setup the GL window object
         self.glwindow1 = None
@@ -59,7 +59,7 @@ class main_window(QDialog):
         # show the GUI
         self.show()
 
-    # ----------------- There should be no need to touch anything below this line  ---------------------
+# ----------------- There should be no need to touch anything below this line  ---------------------
 
     def DrawingCallback(self):
         # this is what actually draws the picture

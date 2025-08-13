@@ -6,7 +6,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
-from OpenGL_2D_class import gl2D, gl2DArrow, gl2DCircle
+from OpenGL_2D_class_GLFW import gl2D, gl2DArrow, gl2DCircle
 
 from HersheyFont import HersheyFont
 hf = HersheyFont()
@@ -68,7 +68,7 @@ class ClockAnimator():
         # using data to control what is drawn
 
         # draw the clock outline
-        glColor3f(1, 1, 1)
+        glColor3f(1.0, 1.0, 1.0)
         glLineWidth(6)
         gl2DCircle(0,0,self.radius,False,36)
 
@@ -97,9 +97,22 @@ class ClockAnimator():
         gl2DArrow(xval,yval,size,(self.handAngle * 180/np.pi), toCenter=True, widthDeg = 40)
 
 
-
-
     def PrepareNextAnimationFrameData(self, frame, nframes):
         self.handAngle = (90 - (self.angles[frame])) * np.pi / 180.0
 
+def main():
+    a = ClockAnimator()
+    a.ProcessFileData("Clock File 1.txt")
 
+    gl2d = gl2D(None,a.DrawPicture,windowType="glfw")
+    gl2d.setViewSize(a.xmin, a.xmax, a.ymin, a.ymax, allowDistortion=False)
+    gl2d.glStartAnimation(a.PrepareNextAnimationFrameData, a.numberOfAnimationFrames,
+                                        delaytime= a.AnimDelayTime, reverseDelayTime = 0.5,
+                                        reverse=a.AnimReverse, repeat=a.AnimRepeat, reset = a.AnimReset)
+    gl2d.glWait()  #wait for the user to close the window
+
+    print("Finished drawing the Machine")
+
+
+if __name__ == "__main__":
+    main()

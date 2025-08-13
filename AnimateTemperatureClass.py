@@ -36,8 +36,12 @@ class TemperatureAnimator():
         self.AnimReset = False
 
 
-    def ProcessFileData(self, data):
+    def ProcessFileData(self, filename):
         # from the array of strings, fill the wing dictionary
+        # Read the file
+        f1 = open(filename, 'r')  # open the file for reading
+        data = f1.readlines()  # read the entire file as a list of strings
+        f1.close()  # close the file  ... very important
 
         for line in data:  # loop over all the lines
             cells = line.strip().replace('(','').replace(')','').split(',')
@@ -203,24 +207,18 @@ def drawTemperatureColorBarHorizontal(xmin,xmax,ymin,ymax):
     glVertex2f(xmin+4*deltaX, ymin)  # Bottom-right
     glEnd()
 
-
 def main():
-    ta=TemperatureAnimator()
+    a =TemperatureAnimator()
+    a.ProcessFileData("Temperatures2.csv")
 
-    f1 = open("Temperatures.csv", 'r')  # open the file for reading
-    data = f1.readlines()  # read the entire file as a list of strings
-    f1.close()  # close the file  ... very important
+    gl2d = gl2D(None,a.DrawPicture,windowType="glfw")
+    gl2d.setViewSize(a.xmin, a.xmax, a.ymin, a.ymax, allowDistortion=False)
+    gl2d.glStartAnimation(a.PrepareNextAnimationFrameData, a.numberOfAnimationFrames,
+                                        delaytime= a.AnimDelayTime, reverseDelayTime = 0.5,
+                                        reverse=a.AnimReverse, repeat=a.AnimRepeat, reset = a.AnimReset)
+    gl2d.glWait()  #wait for the user to close the window
 
-    ta.ProcessFileData(data)
-
-    gl2d = gl2D(None,ta.DrawPicture)
-    gl2d.setViewSize(ta.xmin, ta.xmax, ta.ymin , ta.ymax,False)
-
-    nframes = ta.numberOfAnimationFrames
-    gl2d.glStartAnimation(ta.PrepareNextAnimationFrameData, nframes,delaytime=0.1,
-                                       reverse=True, repeat=False, reset=True)
-    gl2d.glWait()
-    print("hello")
+    print("Finished drawing the Machine")
 
 
 if __name__ == "__main__":

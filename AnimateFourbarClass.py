@@ -508,3 +508,19 @@ def transform(points,xnew,ynew, theta = 0, xref = 0, yref = 0):
     return np.matmul(np.array(points) - (xref,yref),rotate)+ (xnew,ynew)
 
 
+def main():
+    a =FourbarAnimator()
+    a.ProcessFileData("Landing Gear Design.txt")
+
+    gl2d = gl2D(None,a.DrawPicture,windowType="glfw")
+    gl2d.setViewSize(a.xmin, a.xmax, a.ymin, a.ymax, allowDistortion=False)
+    gl2d.glStartAnimation(a.PrepareNextAnimationFrameData, a.numberOfAnimationFrames,
+                                        delaytime= a.AnimDelayTime, reverseDelayTime = 0.5,
+                                        reverse=a.AnimReverse, repeat=a.AnimRepeat, reset = a.AnimReset)
+    gl2d.glWait()  #wait for the user to close the window
+
+    print("Finished drawing the Machine")
+
+
+if __name__ == "__main__":
+    main()

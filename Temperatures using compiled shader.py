@@ -16,6 +16,7 @@ void main() {
 }
 """
 
+
 # Fragment shader (color gradient logic using xCoord)
 FRAGMENT_SHADER = """
 #version 330 core
@@ -28,12 +29,12 @@ void main() {
     // Gradient segments with linear interpolation
     if (xCoord < 0.25)
         color = mix(vec3(0.0, 0.0, 1.0), vec3(0.0, 1.0, 1.0), xCoord / 0.25);              // Blue → Cyan
-    else if (xCoord < 0.45)
-        color = mix(vec3(0.0, 1.0, 1.0), vec3(0.0, 1.0, 0.0), (xCoord - 0.25) / 0.20);     // Cyan → Green
-    else if (xCoord < 0.65)
-        color = mix(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 0.0), (xCoord - 0.45) / 0.20);     // Green → Yellow
+    else if (xCoord < 0.5)
+        color = mix(vec3(0.0, 1.0, 1.0), vec3(0.0, 1.0, 0.0), (xCoord - 0.25) / 0.25);     // Cyan → Green
+    else if (xCoord < 0.75)
+        color = mix(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 0.0), (xCoord - 0.5) / 0.25);     // Green → Yellow
     else
-        color = mix(vec3(1.0, 1.0, 0.0), vec3(1.0, 0.0, 0.0), (xCoord - 0.65) / 0.35);     // Yellow → Red
+        color = mix(vec3(1.0, 1.0, 0.0), vec3(1.0, 0.0, 0.0), (xCoord - 0.75) / 0.25);     // Yellow → Red
 
     FragColor = vec4(color, 1.0);
 }
