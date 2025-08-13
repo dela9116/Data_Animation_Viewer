@@ -34,10 +34,10 @@ class main_window(QDialog):
 
         self.myAnimator = None  # a new Animator instance will be created each time a file is read
         # The Animator class must have these three methods:
-            # self.myAnimator.ProcessFileData(data string) # interprets the data string read from the file
-           # self.myAnimator.DrawPicture()
-            # self.myAnimator.PrepareNextAnimationFrameData(current frame,number of frames)
-        # After  ProcessFileData() is called, the self.Animator class must have meaningful values in
+        # self.myAnimator.ProcessFile(filename) # interprets the data string read from the file
+        # self.myAnimator.DrawPicture()
+        # self.myAnimator.AnimationCallback(current frame,number of frames)
+        # After  ProcessFile() is called, the self.Animator class must have meaningful values in
             # the following drawing size class attributes (data items):
                 # self.xmin, self.xmax, self.ymin,self. ymax    - Used to set the drawing window working space
                 # self.allowDistortion  - Will circles display as round or elliptical?
@@ -59,7 +59,8 @@ class main_window(QDialog):
         # show the GUI
         self.show()
 
-# ----------------- There should be no need to touch anything below this line  ---------------------
+
+    # ----------------- There should be no need to touch anything below this line  ---------------------
 
     def DrawingCallback(self):
         # this is what actually draws the picture
@@ -69,7 +70,7 @@ class main_window(QDialog):
 
     def AnimationCallback(self, frame, nframes):
         # calculations handled by DroneCapture class
-        self.myAnimator.PrepareNextAnimationFrameData(frame, nframes)
+        self.myAnimator.AnimationCallback(frame, nframes)
         self.ui.horizontalSlider_frame.setValue(frame)
         self.ui.Frame_Number.setText(str(frame))
         # the next line is absolutely required for pause, resume, stop, etc !!!
@@ -104,7 +105,7 @@ class main_window(QDialog):
         #try:
         self.myAnimator = self.myAnimatorClass()
         anim = self.myAnimator
-        anim.ProcessFileData(filename)
+        anim.ProcessFile(filename)
 
         self.glwindow1.setViewSize(anim.xmin,anim.xmax,anim.ymin,anim.ymax, anim.allowDistortion)
 
@@ -130,7 +131,7 @@ class main_window(QDialog):
 
     def glFrameSlider(self):  # I used a slider to control manual animation
         frameval = int(self.ui.horizontalSlider_frame.value())
-        self.myAnimator.PrepareNextAnimationFrameData(frameval, 120)
+        self.myAnimator.AnimationCallback(frameval, self.myAnimator.numberOfAnimationFrames)
         self.ui.Frame_Number.setText(str(frameval))
         self.glwindow1.glUpdate()  # update the GL image
         #self.setAngleSliderAndText()

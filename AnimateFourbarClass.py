@@ -141,7 +141,7 @@ class FourbarAnimator():
 
 
 
-    def ProcessFileData(self, filename):
+    def ProcessFile(self, filename):
 
         # Read the file
         f1 = open(filename, 'r')  # open the file for reading
@@ -413,7 +413,7 @@ class FourbarAnimator():
         return
 
 
-    def PrepareNextAnimationFrameData(self, frame, nframes):
+    def AnimationCallback(self, frame, nframes):
         fb=self.fourbar
         self.framenum = frame
         if frame == 0: #use the original theta data
@@ -510,11 +510,11 @@ def transform(points,xnew,ynew, theta = 0, xref = 0, yref = 0):
 
 def main():
     a =FourbarAnimator()
-    a.ProcessFileData("Landing Gear Design.txt")
+    a.ProcessFile("Landing Gear Design.txt")
 
     gl2d = gl2D(None,a.DrawPicture,windowType="glfw")
     gl2d.setViewSize(a.xmin, a.xmax, a.ymin, a.ymax, allowDistortion=False)
-    gl2d.glStartAnimation(a.PrepareNextAnimationFrameData, a.numberOfAnimationFrames,
+    gl2d.glStartAnimation(a.AnimationCallback, a.numberOfAnimationFrames,
                                         delaytime= a.AnimDelayTime, reverseDelayTime = 0.5,
                                         reverse=a.AnimReverse, repeat=a.AnimRepeat, reset = a.AnimReset)
     gl2d.glWait()  #wait for the user to close the window

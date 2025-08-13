@@ -33,7 +33,7 @@ class ClockAnimator():
         self.AnimReset = True
 
 
-    def ProcessFileData(self, filename):
+    def ProcessFile(self, filename):
 
         # Read the file
         f1 = open(filename, 'r')  # open the file for reading
@@ -97,7 +97,7 @@ class ClockAnimator():
         gl2DArrow(xval,yval,size,(self.handAngle * 180/np.pi), toCenter=True, widthDeg = 40)
 
 
-    def PrepareNextAnimationFrameData(self, frame, nframes):
+    def AnimationCallback(self, frame, nframes):
         self.handAngle = (90 - (self.angles[frame])) * np.pi / 180.0
 
 def main():

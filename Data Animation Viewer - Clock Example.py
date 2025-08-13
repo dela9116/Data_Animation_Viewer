@@ -24,7 +24,6 @@ class main_window(QDialog):
         # setup the GUI
         self.ui.setupUi(self)
 
-
         #   !!!!!!!!! this is the second of three custom lines in this file!!!!!!
         # Connect to your custom Animation-ready Class
         self.myAnimatorClass = ClockAnimator # No parentheses here, this is not an Instance of the class
@@ -35,19 +34,19 @@ class main_window(QDialog):
 
         self.myAnimator = None  # a new Animator instance will be created each time a file is read
         # The Animator class must have these three methods:
-        # self.myAnimator.ProcessFileData(data string) # interprets the data string read from the file
+        # self.myAnimator.ProcessFile(filename) # interprets the data string read from the file
         # self.myAnimator.DrawPicture()
-        # self.myAnimator.PrepareNextAnimationFrameData(current frame,number of frames)
-        # After  ProcessFileData() is called, the self.Animator class must have meaningful values in
-        # the following drawing size class attributes (data items):
-        # self.xmin, self.xmax, self.ymin,self. ymax    - Used to set the drawing window working space
-        # self.allowDistortion  - Will circles display as round or elliptical?
-        # And the following animation control class attributes:
-        # self.numberOfAnimationFrames   - total number of animation frames
-        # self.AnimDelayTime  - delay time between frames
-        # self.AnimReverse
-        # self.AnimRepeat
-        # self.AnimReset
+        # self.myAnimator.AnimationCallback(current frame,number of frames)
+        # After  ProcessFile() is called, the self.Animator class must have meaningful values in
+            # the following drawing size class attributes (data items):
+                # self.xmin, self.xmax, self.ymin,self. ymax    - Used to set the drawing window working space
+                # self.allowDistortion  - Will circles display as round or elliptical?
+            # And the following animation control class attributes:
+                # self.numberOfAnimationFrames   - total number of animation frames
+                # self.AnimDelayTime  - delay time between frames
+                # self.AnimReverse
+                # self.AnimRepeat
+                # self.AnimReset
 
         # create and setup the GL window object
         self.glwindow1 = None
@@ -60,16 +59,6 @@ class main_window(QDialog):
         # show the GUI
         self.show()
 
-    def resizeEvent(self, event):
-        width = self.width()
-        height = self.height()
-
-        # Divide window into three vertical panels (equal width)
-
-
-        print(f"Main window size: {width}x{height}")
-        super().resizeEvent(event)
-
 
     # ----------------- There should be no need to touch anything below this line  ---------------------
 
@@ -81,7 +70,7 @@ class main_window(QDialog):
 
     def AnimationCallback(self, frame, nframes):
         # calculations handled by DroneCapture class
-        self.myAnimator.PrepareNextAnimationFrameData(frame, nframes)
+        self.myAnimator.AnimationCallback(frame, nframes)
         self.ui.horizontalSlider_frame.setValue(frame)
         self.ui.Frame_Number.setText(str(frame))
         # the next line is absolutely required for pause, resume, stop, etc !!!
@@ -113,11 +102,10 @@ class main_window(QDialog):
         app.processEvents()
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
 
-
         #try:
         self.myAnimator = self.myAnimatorClass()
         anim = self.myAnimator
-        anim.ProcessFileData(filename)
+        anim.ProcessFile(filename)
 
         self.glwindow1.setViewSize(anim.xmin,anim.xmax,anim.ymin,anim.ymax, anim.allowDistortion)
 
@@ -126,7 +114,7 @@ class main_window(QDialog):
         QApplication.restoreOverrideCursor()
         self.glwindow1.glUpdate()
         self.ui.horizontalSlider_frame.setValue(0)
-        self.ui.horizontalSlider_frame.setMaximum(self.myAnimator.numberOfAnimationFrames - 1)
+        self.ui.horizontalSlider_frame.setMaximum(self.myAnimator.numberOfAnimationFrames)
         self.ui.Frame_Number.setText(str(0))
         self.ui.horizontalSlider_zoom.setValue(100)
         self.ui.checkBox_Repeat.setChecked(anim.AnimRepeat)
@@ -143,8 +131,7 @@ class main_window(QDialog):
 
     def glFrameSlider(self):  # I used a slider to control manual animation
         frameval = int(self.ui.horizontalSlider_frame.value())
-        max = self.ui.horizontalSlider_frame.maximum()
-        self.myAnimator.PrepareNextAnimationFrameData(frameval, self.myAnimator.numberOfAnimationFrames)
+        self.myAnimator.AnimationCallback(frameval, self.myAnimator.numberOfAnimationFrames)
         self.ui.Frame_Number.setText(str(frameval))
         self.glwindow1.glUpdate()  # update the GL image
         #self.setAngleSliderAndText()
@@ -155,14 +142,13 @@ class main_window(QDialog):
         self.glwindow1.glStartAnimation(self.AnimationCallback, anim.numberOfAnimationFrames,
                                         delaytime= anim.AnimDelayTime, reverseDelayTime = 0.5,
                                         reverse=anim.AnimReverse, repeat=anim.AnimRepeat, reset = anim.AnimReset)
-        pass
+
 
     def StopAnimation(self):  # a button to Stop GL Animati0n
         self.glwindow1.glStopAnimation()
 
     def PauseResumeAnimation(self):  # a button to Resume GL Animation
         self.glwindow1.glPauseResumeAnimation()
-
 
     def CheckBoxRepeat(self):  # used a checkbox to Enable drawing of construction lines
         if self.ui.checkBox_Repeat.isChecked():  # it is on
@@ -178,7 +164,6 @@ class main_window(QDialog):
         else:  # stop
             self.myAnimator.AnimReverse = False
         self.glwindow1.glUpdate()
-
 
     def ExitApp(self):
         app.exit()

@@ -36,7 +36,7 @@ class TemperatureAnimator():
         self.AnimReset = False
 
 
-    def ProcessFileData(self, filename):
+    def ProcessFile(self, filename):
         # from the array of strings, fill the wing dictionary
         # Read the file
         f1 = open(filename, 'r')  # open the file for reading
@@ -118,7 +118,7 @@ class TemperatureAnimator():
 
 
 
-    def PrepareNextAnimationFrameData(self, frame, nframes):
+    def AnimationCallback(self, frame, nframes):
         self.thisRow = frame
 
 
@@ -209,11 +209,11 @@ def drawTemperatureColorBarHorizontal(xmin,xmax,ymin,ymax):
 
 def main():
     a =TemperatureAnimator()
-    a.ProcessFileData("Temperatures2.csv")
+    a.ProcessFile("Temperatures2.csv")
 
     gl2d = gl2D(None,a.DrawPicture,windowType="glfw")
     gl2d.setViewSize(a.xmin, a.xmax, a.ymin, a.ymax, allowDistortion=False)
-    gl2d.glStartAnimation(a.PrepareNextAnimationFrameData, a.numberOfAnimationFrames,
+    gl2d.glStartAnimation(a.AnimationCallback, a.numberOfAnimationFrames,
                                         delaytime= a.AnimDelayTime, reverseDelayTime = 0.5,
                                         reverse=a.AnimReverse, repeat=a.AnimRepeat, reset = a.AnimReset)
     gl2d.glWait()  #wait for the user to close the window
