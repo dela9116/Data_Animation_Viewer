@@ -64,7 +64,7 @@ class main_window(QDialog):
 
     def DrawingCallback(self):
         # this is what actually draws the picture
-        if self.myAnimator is None: return
+        if self.myAnimator is None: return  # might not be ready to draw
         self.myAnimator.DrawPicture()  # drawing is done by the DroneCatcher object
 
 
@@ -131,7 +131,7 @@ class main_window(QDialog):
 
     def glFrameSlider(self):  # I used a slider to control manual animation
         frameval = int(self.ui.horizontalSlider_frame.value())
-        self.myAnimator.AnimationCallback(frameval, self.myAnimator.numberOfAnimationFrames)
+        self.AnimationCallback(frameval, self.myAnimator.numberOfAnimationFrames)
         self.ui.Frame_Number.setText(str(frameval))
         self.glwindow1.glUpdate()  # update the GL image
         #self.setAngleSliderAndText()
